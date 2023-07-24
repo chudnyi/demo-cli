@@ -1,5 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "version": "0.1.0",
-  "description": "jsbundle - помогает собирать jsbundle React Native проекта"
+  "description": "jsbundle - помогает собирать jsbundle React Native проекта",
+  "author": {
+    "name": "Дмитрий Чудный",
+    "email": "dmitriy@chudnyi.com"
+  }
 }
