@@ -5,5 +5,10 @@
   "author": {
     "name": "Дмитрий Чудный",
     "email": "dmitriy@chudnyi.com"
+  },
+
+  "main": "src/sss",
+  "dependencies": {
+    "dsdd": "sdsd"
   }
 }

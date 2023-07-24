@@ -24,3 +24,8 @@ npx react-native bundle --config ./metro.config.js --entry-file index.js --platf
 - Ускоришь свою работу
 - Сократишь вероятность ошибки
 - Будешь стильным, можным, молодёжным
+
+## Заголовок
+
+- выв
+- выв
