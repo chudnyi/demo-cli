@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "version": "0.1.0",
+  "description": "jsbundle - помогает собирать jsbundle React Native проекта"
+}
