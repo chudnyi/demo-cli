@@ -11,4 +11,11 @@ fi
 
 npx react-native bundle --config ./metro.config.js --entry-file index.js --platform "$platform" --dev false --bundle-output "$platform.jsbundle"
 ```
+
 Вызывай, не унывай!
+
+Выбирая наш скрипт, ты получишь
+- Освободишь голову от запоминания лишней информации
+- Ускоришь свою работу
+- Сократишь вероятность ошибки
+- Будешь стильным, можным, молодёжным
