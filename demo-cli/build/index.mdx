@@ -1,0 +1,123 @@
+---
+title: Команды для деплоя сервера.
+description: Краткое описание скрипта.
+note: Это [Frontmatter](https://docs.modx.pro/guide/frontmatter) заголовок файла с параметрами.
+---
+
+Скрипт будет выполняться через `bash`.
+```shell
+#!/usr/bin/env bash
+```
+
+Определяем директорию расположения скрипта.
+
+```shell
+SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+```
+Задаём режим прерывания скрипта в случае ошибки какой-либо команды
+
+```shell
+set -e
+```
+Блок констант, которые используются в нескольких местах
+```shell
+DOCKER_CONTAINER_REGISTRY="cr.yandex/crptqj2e22itd9vjbooc"
+```
+
+Получить версию проекта из `package.json`.
+```shell
+version() {
+  node --print "require('./package.json').version"
+}
+```
+
+Получить версию `name` проекта из `package.json`.
+```shell
+name() {
+  node --print "require('./package.json').name"
+}
+```
+
+Получить полную версию сборки, состоящую из версии проекта и номера сборки.
+
+```shell
+build_version() {
+  build_number="$1"
+  # https://semver.org/#backusnaur-form-grammar-for-valid-semver-versions
+  # +build_number - invalid reference format
+  echo "$(version)_$build_number"
+}
+```
+
+Получить `tag` для `docker` образа.
+
+```shell
+
+docker_tag() {
+  build_number="$1"
+  label="$2"
+  if [ -z "$label" ]; then
+    label=$(build_version "$build_number")
+  fi
+  tag="$DOCKER_CONTAINER_REGISTRY/$(name):$label"
+  echo "$tag"
+}
+```
+
+Выполнить сборку `docker` образа.
+
+```shell
+docker_build() {
+  build_number=$("$SELF_DIR/build-number.sh" inc)
+  tag=$(docker_tag "$build_number")
+  tag_latest="$(docker_tag "$build_number", "latest")"
+  echo "Build docker image: $tag"
+  docker build -t "$tag" .
+  docker tag "$tag" "$tag_latest"
+}
+```
+
+Запустить последний `docker` образ на выполнение локально.
+
+```shell
+docker_run() {
+  build_number=$("$SELF_DIR/build-number.sh" read)
+  tag=$(docker_tag "$build_number")
+
+  echo "Run docker image: $tag"
+  echo docker run -it --rm -e PORT=8081 -p 8081:8081 -v "$SELF_DIR/../.env.local:/app/.env" --name next-playground "$tag"
+}
+```
+
+Отправить последний `docker` образ в удалённый репозиторий образов.
+
+```shell
+docker_push() {
+  build_number=$("$SELF_DIR/build-number.sh" read)
+  tag=$(docker_tag "$build_number")
+  tag_latest="$(docker_tag "$build_number", "latest")"
+  echo "Push docker image: $tag"
+  docker push "$tag"
+  echo "Push docker image: $tag_latest"
+  docker push "$tag_latest"
+}
+```
+
+Получить список локальных `docker` образов проекта.
+
+```shell
+docker_list() {
+  docker image list | grep next-playground
+}
+```
+Запускаем переданную в скрипт команду. Имя команды должно совпадать с именем функции в скрипте.
+
+```shell
+"$@"
+```
+
+## Примеры использования
+
+```shell exclude
+scripts/deploy.sh docker_list
+```
