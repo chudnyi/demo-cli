@@ -1,4 +1,17 @@
 {
   "name": "build",
-  "description": "Build this project"
+  "description": "Build this project",
+  "options": [
+    {
+      "name": "dry-run",
+      "description": "Имитировать выполнение команды, реальную сборку не запускать",
+      "env": "DEMO_DRY_RUN",
+      "long": "--dry-run",
+      "short": "-d",
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "required-value": false
+    }
+  ]
 }
