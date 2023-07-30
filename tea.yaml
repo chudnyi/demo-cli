@@ -1,0 +1,4 @@
+dependencies:
+  deno.land: 1.28.0
+  npmjs.com: 8.19.3
+  gnu.org/bash: 5.2.15
